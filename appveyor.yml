@@ -1,5 +1,7 @@
 image: Ubuntu1804  # образ для сборки
 
+stack: jdk 11  # версия JDK
+
 branches:
   only:
     - master  # ветка git
@@ -9,6 +11,7 @@ build: off  # будем использовать свой скрипт сбор
 install:
   # запускаем SUT (запоминаем информацию о процессе в переменной $App)
   - ps: $App = Start-Process -FilePath java -ArgumentList "-jar ./artifacts/app-order.jar" -PassThru
+  - ps: $App = Start-Process -FilePath java -ArgumentList "-jar ./artifacts/app-order.jar -port=7777" -PassThru
 
 build_script:
   - ps: ./gradlew test --info "-Dselenide.headless=true"  # стартуем Selenide в Headless-режиме (см.ниже)
